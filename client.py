@@ -23,6 +23,7 @@ def send_message(input_entry):
     encrypted_message = encrypt(message.encode(), key)
     client_socket.sendall(encrypted_message)
     input_entry.delete(0, tk.END)
+    
 def authenticate(password_entry, authenticate_button):
     global key, root
     
@@ -35,9 +36,12 @@ def authenticate(password_entry, authenticate_button):
         password_label.destroy()
         password_entry.destroy()
         authenticate_button.destroy()
-    
-
-
+        
+        input_label = tk.Label(root, text = "Enter a message:")
+        input_label.pack()
+        
+        input_entry = tk.Entry(root)
+        input_entry.pack
 
 send_button=tk.Button(root,text="Send",command=lambda:send_message(input_entry))
 send_button.pack()
