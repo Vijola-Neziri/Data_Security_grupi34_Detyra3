@@ -16,6 +16,15 @@ def decrypt(cipher_text, key):
     cipher = DES.new(key, DES.MODE_CBC, iv)
     plain_text = unpad(cipher.decrypt(cipher_text[DES.block_size:]), DES.block_size)
     return plain_text
+def derive_key(password, salt):
+    return PBKDF2(password, salt, dkLen=8, count=1000)
+def send_message(input_entry):
+    message = input_entry.get()
+    encrypted_message = encrypt(message.encode(), key)
+    client_socket.sendall(encrypted_message)
+    input_entry.delete(0, tk.END)
+    
+
 
 
 send_button=tk.Button(root,text="Send",command=lambda:send_message(input_entry))
