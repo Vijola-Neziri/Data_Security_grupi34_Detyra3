@@ -16,3 +16,29 @@ def decrypt(cipher_text, key):
     cipher = DES.new(key, DES.MODE_CBC, iv)
     plain_text = unpad(cipher.decrypt(cipher_text[DES.block_size:]), DES.block_size)
     return plain_text
+
+
+send_button=tk.Button(root,text="Send",command=lambda:send_message(input_entry))
+send_button.pack()
+key=derive_key(password.encode(),salt)
+else:
+    password_entry.delete(0,tk.END)
+    password_entry.insert(0,"Authentication Failed")
+    def client():
+        global client_socket,key,password_label,root,salt
+        host='127.0.0.1'
+        port=1234
+        client_socket=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        client_socket.connect((host,port))
+        root=tk.Tk()
+        root.title("Client GUI")
+        password_label=tk.Label(root,text="Enter password:")
+        password_label.pack()
+        password_entry=tk.Entry(root,show="*")
+        password_entry.pack()
+        authenticate_button=tk.Button(root,text="Authenticate",command=lambda:authenticate(password_entry,authenticate_button))
+        authenticate_button.pack()
+        salt=client_socket.recv(16)
+        root.mainloop()
+        client_socket.close()
+        client()
