@@ -23,6 +23,18 @@ def send_message(input_entry):
     encrypted_message = encrypt(message.encode(), key)
     client_socket.sendall(encrypted_message)
     input_entry.delete(0, tk.END)
+def authenticate(password_entry, authenticate_button):
+    global key, root
+    
+    password = password_entry.get()
+    client_socket.sendall(password.encode())
+    response = client_socket.recv(1024)
+    
+    
+    if response == b"OK":
+        password_label.destroy()
+        password_entry.destroy()
+        authenticate_button.destroy()
     
 
 
